@@ -5,7 +5,11 @@ defmodule Strava.Client do
 
   use Tesla
 
-  adapter(Tesla.Adapter.Hackney)
+  if Mix.env() == :test do
+    adapter Tesla.Mock
+  else
+    adapter Tesla.Adapter.Hackney
+  end
 
   plug(Tesla.Middleware.BaseUrl, "https://www.strava.com/api/v3")
   plug(Tesla.Middleware.Headers, [{"User-Agent", "https://hex.pm/packages/strava"}])
